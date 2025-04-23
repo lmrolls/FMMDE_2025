@@ -80,7 +80,7 @@ while r <= 5           % number of factors that are simulated
             out = NaN(nIters,2);
             
             parfor k = 1:nIters  % number of Monte Carlo replications
-                 substream = RandStream('mt19937ar', 'Seed', k);
+                substream = RandStream('mt19937ar', 'Seed', k);
                 RandStream.setGlobalStream(substream);
                 
                 out(k,:) = SimulFun(T,n,k0,r,thetaMethod,DGP,pval);
