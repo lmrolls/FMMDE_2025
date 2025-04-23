@@ -25,11 +25,12 @@
 % 4 ==> thetaMethod = 5*r
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear 
-clc
-addpath SW_MDDM
-addpath numberF
-addpath utils
+
+close all; clear all; clc;
+addpath('../utils');
+addpath('../SW_MDDM');
+addpath('../numberF');
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 n      = 100;

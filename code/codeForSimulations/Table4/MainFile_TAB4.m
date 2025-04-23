@@ -19,9 +19,12 @@ clear; clc; close;
 %  THE FUNCTION GENERATES DATA FROM THREE LATENT FACTORS
 %%#########################################################################################
 
-addpath SW_MDDM
-addpath numberF
-addpath utils
+close all; clear all; clc;
+
+addpath('../utils');
+addpath('../SW_MDDM');
+addpath('../numberF');
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 NN_start    = [50 100 200];
