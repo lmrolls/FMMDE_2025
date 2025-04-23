@@ -34,8 +34,7 @@ addpath('../numberF');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Set random number generator for replicability
-rng(1, 'twister');
-
+rng(1, 'mlfg6331_64'); % Seed 1, Multiplicative Lagged Fibonacci Generator
 n      = 50;
 T      = 50;
 k0     = 1; 
@@ -79,7 +78,7 @@ while r <= 5           % number of factors that are simulated
             out = NaN(nIters,2);
             
             parfor k = 1:nIters  % number of Monte Carlo replications
-                 substream = RandStream('mt19937ar', 'Seed', k);
+                substream = RandStream('mlfg6331_64', 'Seed', 1, 'Substream', k);
                 RandStream.setGlobalStream(substream);
                 
                 out(k,:) = SimulFun(T,n,k0,r,thetaMethod,DGP,pval);
