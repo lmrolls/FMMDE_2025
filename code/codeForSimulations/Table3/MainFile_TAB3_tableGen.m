@@ -36,12 +36,12 @@ addpath('../numberF');
 % Set random number generator for replicability
 rng(1, 'twister');
 
-n      = 50;
-T      = 50;
+n      = 30;
+T      = 30;
 k0     = 1; 
 pval   = 0.05; 
 
-nIters = 100;
+nIters = 20;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,7 +78,7 @@ while r <= 5           % number of factors that are simulated
 
             out = NaN(nIters,2);
             
-            parfor k = 1:nIters  % number of Monte Carlo replications
+            for k = 1:nIters  % number of Monte Carlo replications
                  substream = RandStream('mt19937ar', 'Seed', k);
                 RandStream.setGlobalStream(substream);
                 
@@ -130,7 +130,7 @@ while r <= 5           % number of factors that are simulated
   r = r + 1;  
 end
 
-
+%%
 
 %==================== =======  %
 %                              %
@@ -141,11 +141,10 @@ filename = 'Simulation_Results.xlsx';
 sheet = 'Results';
 
 % Headers
-headers = {'r', 'Theta', 'Sequential Test', '', '', '', '', 'Eigenvalue Ratio', '', '', ''};
-subheaders = {'', '', '0.5r', 'r', '3r', '5r', '', '0.5r', 'r', '3r', '5r'};
+headers = {'', '','','','', 'Sequential Test', '', '', '', '','', 'Eigenvalue Ratio', '', '', ''};
+subheaders = {'r','',  'theta','','0.5r', 'r', '3r', '5r', '','', '0.5r', 'r', '3r', '5r'};
 
 % Write to Excel
-writecell({'n=100, T=100'}, filename, 'Sheet', sheet, 'Range', 'A1');
 writecell(headers, filename, 'Sheet', sheet, 'Range', 'A3');
 writecell(subheaders, filename, 'Sheet', sheet, 'Range', 'A4');
 
@@ -176,95 +175,9 @@ for i = 1:length(r_values)
         % Write to Excel
         writecell({r}, filename, 'Sheet', sheet, 'Range', sprintf('A%d', row));
         writecell({dgp}, filename, 'Sheet', sheet, 'Range', sprintf('B%d', row)); % Theta column (DGP label)
-        writematrix(seq_data, filename, 'Sheet', sheet, 'Range', sprintf('C%d', row)); % C:G (0.5r, r, 3r, 5r)
-        writematrix(eigen_data, filename, 'Sheet', sheet, 'Range', sprintf('I%d', row)); % I:L (0.5r, r, 3r, 5r)
+        writematrix(seq_data, filename, 'Sheet', sheet, 'Range', sprintf('E%d', row)); % C:G (0.5r, r, 3r, 5r)
+        writematrix(eigen_data, filename, 'Sheet', sheet, 'Range', sprintf('K%d', row)); % I:L (0.5r, r, 3r, 5r)
     end
     row_start = row_start + 1; % Add empty row between r values
 end
 
-
-filename = 'Simulation_Results.xlsx';
-sheet = 'Results';
-
-% Clear existing sheet if it exists
-if isfile(filename)
-    [~, sheets] = xlsfinfo(filename);
-    if ismember(sheet, sheets)
-        excel = actxserver('Excel.Application');
-        workbook = excel.Workbooks.Open([pwd '\' filename]);
-        excel.DisplayAlerts = false; % Suppress warning about deleting sheet
-        workbook.Sheets.Item(sheet).Delete;
-        excel.DisplayAlerts = true;
-        workbook.Save();
-        workbook.Close();
-        excel.Quit();
-    end
-end
-
-% Write headers
-headers = {'r', 'Theta', '0.5r', 'r', '3r', '5r', '0.5r', 'r', '3r', '5r'};
-writecell(headers, filename, 'Sheet', sheet, 'Range', 'A4');
-
-% Write data
-r_values = [2, 3, 4, 5];
-dgp_labels = {'DGP1', 'DGP2', 'DGP3'};
-row_start = 6; % Data starts at row 6
-
-for i = 1:length(r_values)
-    r = r_values(i);
-    for j = 1:length(dgp_labels)
-        dgp = dgp_labels{j};
-        row = row_start + (i-1)*4 + (j-1);
-        index = (r-2)*3 + j; % Match simulation indexing
-        
-        % Extract data for this r and DGP
-        seq_data = [finalTable.sequentialTest.rx05(index), ...
-                    finalTable.sequentialTest.r(index), ...
-                    finalTable.sequentialTest.rx3(index), ...
-                    finalTable.sequentialTest.rx5(index)];
-        eigen_data = [finalTable.eigenvalueRatio.rx05(index), ...
-                      finalTable.eigenvalueRatio.r(index), ...
-                      finalTable.eigenvalueRatio.rx3(index), ...
-                      finalTable.eigenvalueRatio.rx5(index)];
-        
-        % Round to 2 decimals
-        seq_data = round(seq_data, 2);
-        eigen_data = round(eigen_data, 2);
-        
-        % Write to Excel
-        writecell({r}, filename, 'Sheet', sheet, 'Range', sprintf('A%d', row));
-        writecell({dgp}, filename, 'Sheet', sheet, 'Range', sprintf('B%d', row));
-        writematrix(seq_data, filename, 'Sheet', sheet, 'Range', sprintf('C%d', row));
-        writematrix(eigen_data, filename, 'Sheet', sheet, 'Range', sprintf('G%d', row));
-    end
-end
-
-% Add empty rows between r groups as shown in the image
-empty_rows = [9 10, 14 15, 19 20, 24 25];
-for row = empty_rows
-    writecell({''}, filename, 'Sheet', sheet, 'Range', sprintf('A%d', row));
-end
-
-% Format the sheet to match the image
-excel = actxserver('Excel.Application');
-workbook = excel.Workbooks.Open([pwd '\' filename]);
-worksheets = workbook.Sheets;
-worksheet = worksheets.Item(sheet);
-
-% Center align all cells
-used_range = worksheet.UsedRange;
-used_range.HorizontalAlignment = -4108; % xlCenter
-
-% Add borders
-used_range.Borders.LineStyle = 1; % Continuous line
-used_range.Borders.Weight = 2; % Medium weight
-
-% Autofit columns
-used_range.Columns.AutoFit;
-
-% Save and close
-workbook.Save();
-workbook.Close();
-excel.Quit();
-
-disp(['Excel file "' filename '" created successfully.']);
