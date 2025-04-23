@@ -33,8 +33,11 @@ addpath('../numberF');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-n      = 100;
-T      = 100;
+% Set random number generator for replicability
+rng(1, 'twister'); % Seed 1, Mersenne Twister
+
+n      = 50;
+T      = 50;
 k0     = 1; 
 pval   = 0.05; 
 
@@ -76,6 +79,8 @@ while r <= 5           % number of factors that are simulated
             out = NaN(nIters,2);
             
             parfor k = 1:nIters  % number of Monte Carlo replications
+                substream = RandStream('mlfg6331_64', 'Seed', 1, 'Substream', k);
+                RandStream.setGlobalStream(substream);
                 
                 out(k,:) = SimulFun(T,n,k0,r,thetaMethod,DGP,pval);
                 disp([k,thetaMethod,DGP,r]);
@@ -125,3 +130,53 @@ while r <= 5           % number of factors that are simulated
   r = r + 1;  
 end
 
+%%
+
+%==================== =======  %
+%                              %
+%  EXCEL TABLES PRODUCTION     %
+%                              %
+%==============================%
+filename = 'Simulation_Results.xlsx';
+sheet = 'Results';
+
+% Headers
+headers = {'r', '', 'DGP', '', 'Sequential Test', '', '', '', '', 'Eigenvalue Ratio', '', '', ''};
+subheaders = {'', '', '', '', '0.5r', 'r', '3r', '5r', '', '0.5r', 'r', '3r', '5r'};
+
+% Write to Excel
+writecell({'n=100, T=100'}, sheet, 'Range', 'A1');
+writecell(headers, sheet, 'Range', 'A3');
+writecell(subheaders, sheet, 'Range', 'A4');
+
+r_values = [2, 3, 4, 5];
+dgp_labels = {'DGP1', 'DGP2', 'DGP3'};
+row_start = 5;
+for i = 1:length(r_values)
+    r = r_values(i);
+    for j = 1:length(dgp_labels)
+        dgp = dgp_labels{j};
+        row = row_start + (i-1)*4 + (j-1);
+        index = (r-2)*3 + j; % Match simulation indexing
+        
+        % Extract data for this r and DGP
+        seq_data = [finalTable.sequentialTest.rx05(index), ...
+                    finalTable.sequentialTest.r(index), ...
+                    finalTable.sequentialTest.rx3(index), ...
+                    finalTable.sequentialTest.rx5(index)];
+        eigen_data = [finalTable.eigenvalueRatio.rx05(index), ...
+                      finalTable.eigenvalueRatio.r(index), ...
+                      finalTable.eigenvalueRatio.rx3(index), ...
+                      finalTable.eigenvalueRatio.rx5(index)];
+        combined_data = round([seq_data, eigen_data], 2); % Round to 2 decimals
+        
+        % Write to Excel
+        writecell({r}, sheet, 'Range', sprintf('A%d', row));
+        writecell({dgp}, sheet, 'Range', sprintf('C%d', row));
+        writematrix(combined_data, sheet, 'Range', sprintf('E%d', row));
+    end
+    row_start = row_start + 1; % Add empty row between r values
+end
+
+
+disp(['Excel file "' filename '" created successfully.']);
