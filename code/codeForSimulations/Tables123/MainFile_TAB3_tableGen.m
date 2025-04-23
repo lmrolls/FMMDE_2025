@@ -30,18 +30,19 @@ close all; clear all; clc;
 addpath('../utils');
 addpath('../SW_MDDM');
 addpath('../numberF');
+addpath("subfunctions")
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Set random number generator for replicability
 rng(1, 'twister');
 
-n      = 30;
-T      = 30;
+n      = 50;
+T      = 50;
 k0     = 1; 
 pval   = 0.05; 
 
-nIters = 20;
+nIters = 1000;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,7 +79,7 @@ while r <= 5           % number of factors that are simulated
 
             out = NaN(nIters,2);
             
-            for k = 1:nIters  % number of Monte Carlo replications
+            parfor k = 1:nIters  % number of Monte Carlo replications
                  substream = RandStream('mt19937ar', 'Seed', k);
                 RandStream.setGlobalStream(substream);
                 

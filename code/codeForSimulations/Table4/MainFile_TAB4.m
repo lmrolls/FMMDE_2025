@@ -24,7 +24,7 @@ close all; clear all; clc;
 addpath('../utils');
 addpath('../SW_MDDM');
 addpath('../numberF');
-
+addpath('subfunctions')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 NN_start    = [50 100 200];
