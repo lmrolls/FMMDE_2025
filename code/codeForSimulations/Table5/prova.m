@@ -68,8 +68,12 @@ for TT = 1:length(TT_start)
         ytrue = zeros(nreps, N);
         
         parfor rep = 1:nreps
+            disp(rep)
             substream = RandStream('mt19937ar', 'Seed', rep);
             RandStream.setGlobalStream(substream);
+
+            % Disable rank-deficient matrix warning
+            warning('off', 'MATLAB:rankDeficientMatrix');
 
             % FACTOR DATA GENERATION
             x = fLeeShao(T, N, rr);
