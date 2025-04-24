@@ -23,7 +23,7 @@
 % - Average the MSFE ratios over 400 Monte Carlo replications.
 %
 % Dependencies:
-% - fLeeShao(): Generates data from the 3-factor model (Eq. 5).
+% - fLeeShao(): Generates data from the 3-factor model (Eq. 5 in the paper).
 % - stockwatson2002(): Estimates factors using Stock-Watson (2002).
 % - factorMDDM2(): Estimates factors using FMMDE.
 % - factorLAM2(): Estimates factors using LYB.

@@ -2,7 +2,7 @@
 % Monte Carlo Simulation for Factor Model Estimation (Table 4)
 %
 % Purpose: 
-%   Generates data from a nonlinear factor model (EQ.5) with three latent factors
+%   Generates data from a nonlinear factor model (EQ.3 in the paper) with three latent factors
 %   and evaluates the performance of two factor estimation methods: Eigenvalue 
 %   Ratio and Sequential Testing.
 %
@@ -19,7 +19,8 @@
 %   - mOutTest: Proportion of correct factor number estimates (3) using Sequential Testing
 %
 % Dependencies:
-%   - fLeeShaoNonLinear(): Generates data from the factor model in EQ.5
+%   - fLeeShaoNonLinear(): Generates data from the factor model in EQ.3 in
+%   the paper
 %   - factorMDDM4(): Computes Eigenvalue Ratio-based factor estimation
 %   - seqTest(): Performs sequential testing for factor estimation
 %   - standardize(): Standardizes input data
@@ -48,7 +49,7 @@ k0_start = [ 1 10 25];
 
 rmax  = 10;
 pval  = 0.05;
-nreps = 100;
+nreps = 300;
 
 mOutRAT  = zeros(length(TT_start),length(NN_start),length(k0_start)); 
 mOutTest = zeros(length(TT_start),length(NN_start),length(k0_start));

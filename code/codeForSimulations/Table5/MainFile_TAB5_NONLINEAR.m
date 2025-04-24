@@ -13,7 +13,7 @@
 %
 % Methodology:
 % - Simulated data X_t (N-dimensional) are generated from a 3-dimensional nonlinear factor
-%   model (Eq. 5 in the paper) using fLeeShaoNonLinear(T,N).
+%   model (Eq. 3 in the paper) using fLeeShaoNonLinear(T,N).
 % - Factors F^{m}_t (3-dimensional) are estimated from X_t using methods m = {FMMDE, SW, LYB}.
 % - For each variable X_{t,k} (k=1,...,N), forecast X_{t+1,k} using:
 %     X_{t+1,k} = beta*F^{m}_t + epsi_t, where beta is estimated via OLS.
@@ -23,7 +23,7 @@
 % - Average the MSFE ratios over 1000 Monte Carlo replications.
 %
 % Dependencies:
-% - fLeeShaoNonLinear(): Generates data from the 3-factor nonlinear model (Eq. 5).
+% - fLeeShaoNonLinear(): Generates data from the 3-factor nonlinear model (Eq. 3 in the paper).
 % - stockwatson2002(): Estimates factors using Stock-Watson (2002).
 % - factorMDDM2(): Estimates factors using FMMDE.
 % - factorLAM2(): Estimates factors using LYB.
