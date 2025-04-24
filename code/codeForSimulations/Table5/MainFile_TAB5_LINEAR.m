@@ -3,16 +3,40 @@
 %
 % NN_start: different cross section dimensions to loop over
 % TT_start: different time series dimensions to loop over
-% k0_start: different values of k0 to loop over
 %
-% rR: TRUE NUMBER OF FACTORS,
+% rr: TRUE NUMBER OF FACTORS,
 % nreps: number of monte carlo replications
 %
+% This code evaluates the out of sample one step ahead predictive capabilities
+% of the three methods SW, LYB and FMMDE
 %
-% MAKES USE OF THE FUNCTION fLeeShaoNonLinear() which generates data from
-% the factor model in EQ.5
+% The simulated data X_t, a N dimensional stochastic process,
+% are obtained from the 3-dimensional factor process defined in equation 5 in th paper. 
+% Be F^{m}_t the factors estimated from X_t using method m 
+%
+% We assume we know the true number of factor so that F^{m}_t is
+% taken to be 3-dimensional.
+%
+% The forecasting equation takes this form y_{t+1} = beta*F^{m}_t +epsi_t
+% where y_t = X_{t,n} so that we obtain N forecasts, one for each dimension
+% in the stochastic process X_t. 
+%
+% For each method m we compute the mean one step ahead squared forecast
+% error (MSFE)  averaging over the N forecast errors committed in the prediction of the N
+% variables in X_{t}.
+%
+% The performance is evaluated observing the ratio between the MSFEs computed for different methods
+% The MSFE of FMMDE is always at the numerator.
+% We have therefore MSFE^{FMMDE}/MSFE^{m}, m being LYB or SW. 
+%
+% Finally, we average the ratio of the MSFEs over 1000 monte carlo
+% replications to obtain the final output reported in the tables
+%
+% The code MAKES USE OF THE FUNCTION fLeeShao() which generates data from 
+% the factor model in EQ.5 of the paper
 %  THE FUNCTION GENERATES DATA FROM THREE LATENT FACTORS
 % 
+% Also uses the function stockwatson2002() 
 %%#########################################################################################
 
 close all; clear all; clc;
@@ -30,6 +54,7 @@ rng(1, 'twister');
 NN_start    = [100 300 500];
 % Number of Observations
 TT_start    = [200 500 1000];
+rr = 3;
 
 k0=1;
 
@@ -92,7 +117,7 @@ k0=1;
                     
                     b_hat_lam        = Flamsub\ysub;
                     yfor_lam(rep,k)  = Flamfor*b_hat_lam;
-                    ytrue(rep,k)    = ytout;   % y_{t+1}
+                    ytrue(rep,k)     = ytout;   % y_{t+1}
                 end
               
             end
@@ -101,6 +126,11 @@ k0=1;
             %  MSE COMPUTATION
             %==================
            
+            mse_cla_sw{NN,TT}     = mean((ytrue - yfor_sw).^2);
+            mse_cla_md{NN,TT}     = mean((ytrue  - yfor_md).^2);
+            mse_cla_lam{NN,TT}     = mean((ytrue  - yfor_lam).^2);
+
+
             GM_mse_sw(NN,TT)      = mean(mse_cla_sw{NN,TT});
 
             GM_mse_md(NN,TT)      = mean(mse_cla_md{NN,TT});
@@ -111,5 +141,5 @@ k0=1;
     end
 
 
-GM_mse_md./GM_mse_lam
-GM_mse_md./GM_mse_sw
+GM_mse_md./GM_mse_lam;
+GM_mse_md./GM_mse_sw;

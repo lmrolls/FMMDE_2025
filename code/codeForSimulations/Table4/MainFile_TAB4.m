@@ -12,10 +12,11 @@
 % mOutRAT, mOutTest: Output of Table 4, proportion of successful attempts
 % in the estimation of the true number of factors rr in over the total
 % number of monte carlo replications
+% Using Eigenvalue Ratio and Sequential testing methodologies respectively
 %
 % MAKES USE OF THE FUNCTION fLeeShaoNonLinear() which generates data from
 % the factor model in EQ.5
-%  THE FUNCTION GENERATES DATA FROM THREE LATENT FACTORS
+%  THE FUNCTION GENERATES DATA FROM THREE LATENT FACTORS    
 %%#########################################################################################
 
 close all; clear all; clc;

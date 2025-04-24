@@ -3,16 +3,14 @@
 %
 % NN_start: different cross section dimensions to loop over
 % TT_start: different time series dimensions to loop over
-% k0_start: different values of k0 to loop over
 %
-% rR: TRUE NUMBER OF FACTORS,
+% rr: TRUE NUMBER OF FACTORS,
 % nreps: number of monte carlo replications
 %
 %
 % MAKES USE OF THE FUNCTION fLeeShaoNonLinear() which generates data from
 % the factor model in EQ.5
 %  THE FUNCTION GENERATES DATA FROM THREE LATENT FACTORS
-% 
 %%#########################################################################################
 
 close all; clear all; clc;
@@ -32,7 +30,7 @@ NN_start    = [100 300 500];
 TT_start    = [200 500 1000];
 
 k0=1;
-
+rr = 3;
 
 for TT = 1:length(TT_start)
     T = TT_start(TT);
@@ -100,6 +98,11 @@ for TT = 1:length(TT_start)
         %==================
         %  MSE COMPUTATION
         %==================
+
+        mse_cla_sw{NN,TT}     = mean((ytrue - yfor_sw).^2);
+        mse_cla_md{NN,TT}     = mean((ytrue  - yfor_md).^2);
+        mse_cla_lam{NN,TT}     = mean((ytrue  - yfor_lam).^2);
+
 
 
         GM_mse_sw(NN,TT)      = mean(mse_cla_sw{NN,TT});
