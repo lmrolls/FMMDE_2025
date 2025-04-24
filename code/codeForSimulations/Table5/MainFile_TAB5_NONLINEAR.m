@@ -1,119 +1,139 @@
-%%#################################################################################
+%%#########################################################################################
 % CODE USED TO GENERATE TABLE 5: Nonlinear Factors
 %
-% NN_start: different cross section dimensions to loop over
-% TT_start: different time series dimensions to loop over
+% Purpose: Evaluate the out-of-sample one-step-ahead predictive performance of three factor
+% estimation methods: FMMDE (Factor Model Maximum Distance Estimator), SW (Stock-Watson 2002),
+% and LYB (Lam-Yao-Bathia) using simulated data from a nonlinear factor model.
 %
-% rr: TRUE NUMBER OF FACTORS,
-% nreps: number of monte carlo replications
+% Parameters:
+% - NN_start: Cross-sectional dimensions (N = [100, 300, 500])
+% - TT_start: Time-series dimensions (T = [200, 500, 1000])
+% - rr: True number of factors (rr = 3)
+% - nreps: Number of Monte Carlo replications (1000)
 %
+% Methodology:
+% - Simulated data X_t (N-dimensional) are generated from a 3-dimensional nonlinear factor
+%   model (Eq. 5 in the paper) using fLeeShaoNonLinear(T,N).
+% - Factors F^{m}_t (3-dimensional) are estimated from X_t using methods m = {FMMDE, SW, LYB}.
+% - For each variable X_{t,k} (k=1,...,N), forecast X_{t+1,k} using:
+%     X_{t+1,k} = beta*F^{m}_t + epsi_t, where beta is estimated via OLS.
+% - Compute the mean squared forecast error (MSFE) for each method by averaging squared
+%   forecast errors across N variables per replication.
+% - Calculate MSFE ratios: MSFE^{FMMDE}/MSFE^{m} (m = SW, LYB).
+% - Average the MSFE ratios over 1000 Monte Carlo replications.
 %
-% MAKES USE OF THE FUNCTION fLeeShaoNonLinear() which generates data from
-% the factor model in EQ.5
-%  THE FUNCTION GENERATES DATA FROM THREE LATENT FACTORS
+% Dependencies:
+% - fLeeShaoNonLinear(): Generates data from the 3-factor nonlinear model (Eq. 5).
+% - stockwatson2002(): Estimates factors using Stock-Watson (2002).
+% - factorMDDM2(): Estimates factors using FMMDE.
+% - factorLAM2(): Estimates factors using LYB.
+% - standardize(): Standardizes the input data.
+%
+% Output: Matrices of averaged MSFE ratios (MSFE^{FMMDE}/MSFE^{SW}, MSFE^{FMMDE}/MSFE^{LYB})
+% for each (N,T) combination.
 %%#########################################################################################
 
 close all; clear all; clc;
 
 addpath('../factorEstimation');
 addpath('../DGPs');
-addpath('subfunctions')
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+addpath('subfunctions');
 
 
 % Set random number generator for replicability
 rng(1, 'twister');
 
-% Number of Predictors
-NN_start    = [100 300 500];
-% Number of Observations
-TT_start    = [200 500 1000];
+% Parameters
+NN_start = [100 300 500]; % Cross-sectional dimensions
+TT_start = [200 500 1000]; % Time-series dimensions
+rr = 3; % Number of factors
+nreps = 400; % Number of Monte Carlo replications
+k0 = 1;
 
-k0=1;
-rr = 3;
+% Initialize cell arrays for MSE storage
+mse_cla_sw = cell(length(NN_start), length(TT_start));
+mse_cla_md = cell(length(NN_start), length(TT_start));
+mse_cla_lam = cell(length(NN_start), length(TT_start));
 
 for TT = 1:length(TT_start)
     T = TT_start(TT);
-    disp(T)
+    disp(['T = ', num2str(T)]);
     for NN = 1:length(NN_start)
         N = NN_start(NN);
-        disp(N)
-        parfor rep = 1:1000
+        disp(['N = ', num2str(N)]);
+        
+        % Pre-allocate arrays for forecasts and true values
+        yfor_sw = zeros(nreps, N);
+        yfor_md = zeros(nreps, N);
+        yfor_lam = zeros(nreps, N);
+        ytrue = zeros(nreps, N);
+        
+        parfor rep = 1:nreps
             disp(rep)
-
             substream = RandStream('mt19937ar', 'Seed', rep);
             RandStream.setGlobalStream(substream);
 
-            %=========================
-            %  FACTOR DATA GENERATION
-            %=========================
+            % Disable rank-deficient matrix warning
+            warning('off', 'MATLAB:rankDeficientMatrix');
 
-            x               = fLeeShaoNonLinear(T,N);    % generate NONLINEAR factors
-            x               = standardize(x);
-            Xt              = x(1:end-1,:);              % X_t
-            Xout            = x(end,:);                  % X_{t+1} value to be forecasted
+            % FACTOR DATA GENERATION
+            x = fLeeShaoNonLinear(T, N); % Generate NONLINEAR factors
+            x = standardize(x);
+            Xt = x(1:end-1, :); % X_t
+            Xout = x(end, :); % X_{t+1}
 
-            %====================
-            %  FACTOR ESTIMATION
-            %====================
-
-            [Fmddm]         = factorMDDM2(Xt, k0, rr);  % FMMDE factors
-            [Fsw]           = stockwatson2002(Xt,rr);   % SW  factors
-            [Flam]          = factorLAM2(Xt, k0, rr);   % LYB factors
-
-            for k=1:N % Loop over the n simulated variables
-
-                yt      = Xt(:,k);   % k-th lagged variable y_t = X_{t,k} becomes dependent variable yt
-                ytout   = Xout(:,k); % y_{t+1} = X_{t+1,k} future variable to be forecasted
-
-                ysub    = yt(2:end,1); % y_{t}
-
-                % Lagged Factors for One Step Ahead Forecast: F_{t-1}
-                Fswsub  = Fsw(1:end-1,:);
-                Fmdsub  = Fmddm(1:end-1,:);
-                Flamsub = Flam(1:end-1,:);
-
-                % Factors at time t: F_t
-                Fsfor   = Fsw(end,:);
-                Fmdfor  = Fmddm(end,:);
-                Flamfor = Flam(end,:);
-
-                %==================
-                %  OLS ESTIMATION
-                %==================
-
-                b_hat_sw         = Fswsub\ysub;    %        y_t = bhat * F_{t-1}
-                yfor_sw(rep,k)   = Fsfor*b_hat_sw; % yhat_{t+1} = bhat * F_{t}
+            % FACTOR ESTIMATION
+            [Fmddm] = factorMDDM2(Xt, k0, rr); % FMMDE
+            [Fsw] = stockwatson2002(Xt, rr); % SW
+            [Flam] = factorLAM2(Xt, k0, rr); % LYB 
             
-                b_hat_md         = Fmdsub\ysub;
-                yfor_md(rep,k)   = Fmdfor*b_hat_md;
-         
-                b_hat_lam        = Flamsub\ysub;
-                yfor_lam(rep,k)  = Flamfor*b_hat_lam;
-                ytrue(rep,k)     = ytout;           % y_{t+1}
-            end
+            for k = 1:N
+                yt = Xt(:, k);
+                ytout = Xout(:, k);
+                ysub = yt(2:end, 1);
 
+                % Lagged Factors (F_{t-1})
+                Fswsub = Fsw(1:end-1, :);
+                Fmdsub = Fmddm(1:end-1, :);
+                Flamsub = Flam(1:end-1, :);
+
+                % Factors at time t (F_t)
+                Fsfor = Fsw(end, :);
+                Fmdfor = Fmddm(end, :);
+                Flamfor = Flam(end, :);
+
+                % OLS ESTIMATION
+                b_hat_sw = Fswsub\ysub;
+                yfor_sw(rep, k) = Fsfor*b_hat_sw;
+                
+                b_hat_md = Fmdsub\ysub;
+                yfor_md(rep, k) = Fmdfor*b_hat_md;
+                
+                b_hat_lam = Flamsub\ysub;
+                yfor_lam(rep, k) = Flamfor*b_hat_lam;
+                
+                ytrue(rep, k) = ytout; 
+            end
         end
 
-        %==================
-        %  MSE COMPUTATION
-        %==================
-
-        mse_cla_sw{NN,TT}     = mean((ytrue - yfor_sw).^2);
-        mse_cla_md{NN,TT}     = mean((ytrue  - yfor_md).^2);
-        mse_cla_lam{NN,TT}     = mean((ytrue  - yfor_lam).^2);
-
-
-
-        GM_mse_sw(NN,TT)      = mean(mse_cla_sw{NN,TT});
-
-        GM_mse_md(NN,TT)      = mean(mse_cla_md{NN,TT});
-
-        GM_mse_lam(NN,TT)      = mean(mse_cla_lam{NN,TT});
-
+        % MSE COMPUTATION (outside parfor)
+        mse_cla_sw{NN,TT} = mean((ytrue - yfor_sw).^2, 2); % Mean across N variables per replication
+        mse_cla_md{NN,TT} = mean((ytrue - yfor_md).^2, 2); % Size: nreps x 1
+        mse_cla_lam{NN,TT} = mean((ytrue - yfor_lam).^2, 2);
+        
+        % Average MSE across replications
+        GM_mse_sw(NN,TT) = mean(mse_cla_sw{NN,TT});
+        GM_mse_md(NN,TT) = mean(mse_cla_md{NN,TT});
+        GM_mse_lam(NN,TT) = mean(mse_cla_lam{NN,TT});
     end
 end
 
+% Compute and display MSFE ratios
+disp('MSFE^{FMMDE}/MSFE^{SW}:');
+GM_mse_md ./ GM_mse_sw
+disp('MSFE^{FMMDE}/MSFE^{LYB}:');
+GM_mse_md ./ GM_mse_lam
 
-GM_mse_md./GM_mse_sw;
-GM_mse_md./GM_mse_lam;
+
+% Re-enable warning (optional)
+warning('on', 'MATLAB:rankDeficientMatrix');

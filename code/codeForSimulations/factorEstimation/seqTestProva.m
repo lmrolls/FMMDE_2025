@@ -1,5 +1,5 @@
 
-function[vPvals,out] = seqTest(Y,B,crit,k0,esta)   
+function[vPvals,out] = seqTestProva(Y,B,crit,k0,esta)   
 
 if nargin == 4
   esta = "te";
@@ -17,7 +17,7 @@ if esta == "te"
   test  = @(x) testShao(x, 'w', 9, 0); 
   bootF = @(x) bernRadem(x);
 elseif esta == "no"
-  test  = @(x) escancianoMart2(x,0);
+  test  = @(x) testShao(x, 'w', 9, 0);
   bootF = @(x) bernEsc(x);
 end
 
@@ -64,7 +64,7 @@ end
 %%
 
 
-function[fhat,Ahat,chat] = factorMDDM(Y,k0,r)
+function[fhat,Ahat,chat] = factorMDDM(Y,k0,~)
 
 [n, p] = size(Y);
 S = zeros(p,p);                   
@@ -73,30 +73,8 @@ for k=1:k0                                    % k0:lags cumul. MDDM(pag 219)
     S = S + MDDM( Y(1:(n-k),:), Y((1+k):n,:) );       %cumulative MDDM(k0)
 end
 
-[eVec,eVal] = eig(S);                      %eigendec. cumulative MDDM(k0)
-% eVal = diag(eVal);
-% eVal = sort(eVal,'descend');
-% 
-% if p < 100
-%     R  = p-1;
-% elseif p>=100 && p<400
-%     R = (p/2);
-% else
-%     R = floor((p/3));
-% end
-% 
-% lambda = zeros(R,1);
-% 
-% for i=1:R
-%     lambda(i) = eVal(i+1)/eVal(i);         %lambda= ratios subsequent eigenVals
-% end
-% 
-% 
-% [~,argMin] =  min(lambda(1:R));                 % argmin of ratios 
-%    icstar = (argMin);   
+[eVec,~] = eig(S);                      %eigendec. cumulative MDDM(k0)
 
-% [~,argMin] =  min(lambda(2:R));                 % argmin of ratios 
-%    icstar = (argMin+1);                      %for estimating size factor process                              
 Ahat = eVec(:,(1:p));   
 
 
@@ -104,90 +82,7 @@ Ahat = eVec(:,(1:p));
     fhat=Y*Ahat;
     
     chat=fhat*Ahat';
-    %ic1 = argMin;
-    %ss = eVal;
-    %icstar = (argMin+2);
-end
-
-
-%%
-
-function[stat,pval] = escancianoMart2(x, B)
-[n] = length(x);
-sigma2 = var(x);
-xbar = mean(x);
-stat3 = 0;
-alfii = cell(n-1,1);
-
-for j = 1:(n-1)
-    nj = (n - j + 1);
-    coeff = 1/(sigma2*((j*pi)^2)*nj);
-    stat2 = 0;
-    alfio = zeros(length((j+1) : n),length((j+1) : n));
-    for t = (j+1) : n
-        in  = x(t)-xbar;
-        in2 = x(t-j);
-        stat1 = 0;
-        for s = (j+1) : n
-            alfio2 = exp(-0.5*(in2-x(s-j))^2);
-            stat1 = stat1 + in * ( x(s) - xbar ) * alfio2;
-            alfio(t-j,s-j) = alfio2; 
-            
-            
-        end
-        stat2 = stat2 + stat1;
-    end
-    stat3 = stat3 + coeff * stat2;
-    alfii{j} = alfio;
     
-end
-
-stat = stat3;
-
-if B ~= 0
-    Tstar = zeros(B,1);
-    for b = 1:B
-        stat3 = 0;
-        Ystar = x; W = bernEsc(n);
-        for ik = 1:n
-            Ystar(ik,:) = Ystar(ik,:)*W(ik);
-        end
-        Ybar = mean(Ystar);
-        sigma2star = var(Ystar);
-        
-        for j = 1:(n-1)
-            alfio = alfii{j};
-            nj = (n - j + 1);
-            coeff = 1/(sigma2star*((j*pi)^2)*nj);
-            stat2 = 0;
-
-            for t = (j+1) : n
-                in  = Ystar(t)-Ybar;
-                %in2 = x(t-j);
-                stat1 = 0;
-                for s = (j+1) : n
-                    stat1 = stat1 + in * (Ystar(s)-Ybar) * alfio(t-j,s-j);
-                    
-                end
-                stat2 = stat2 + stat1;
-            end
-            stat3 = stat3 + coeff * stat2;
-            
-        end
-        
-        Tstar(b) = stat3;
-        
-        
-    end
-    
-    pval = sum(Tstar>=stat )/(B+1);
-   
-    
-else
-    pval=2;
-end
-
-
 end
 
 
@@ -274,8 +169,42 @@ function out = bernRadem(n)
   
 end
 
+%%
+
+function [mMDDM] = MDDM(mX, mY)  
+
+% Computes the Martingale Difference Divergence Matrix (MDDM) between two
+% vector time series X and Y, as defined in:
+% Lee, C. E., & Shao, X. (2018). Martingale Difference Divergence Matrix and
+% Its Application to Dimension Reduction for Stationary Multivariate Time Series.
+
+ [cn, cp] = size(mX);
+[~, cq] = size(mY);
+mMDDM = zeros(cq,cq);
+cYbar = mean(mY, 1);
+mY = mY - ones(cn,1)*(cYbar);
 
 
+if cp == 1
+    for i=1:cn
+        cXdist = abs(mX(i) - mX);
+        mMDDM = mMDDM + mY(i,:) * (transpose(cXdist) * mY);
+    end
+    
+else
+    for i=1:cn
+        
+        cXdist = transpose(transpose(mX(i,:)) - transpose(mX));
+        cXdist = cXdist.^2;
+        cXdist = sqrt(sum(cXdist,2));
+        mMDDM = mMDDM + transpose(mY(i,:)) * (transpose(cXdist) * mY);
+    end
+    
+    
+end
+    mMDDM = -mMDDM/(cn^2);
+    
+end
 
 
 

@@ -1,5 +1,10 @@
-function [mMDDM] = MDDM(mX, mY)  %Computes Matringale difference divergence matrix between  
-                                  % twovector series mX and mY
+function [mMDDM] = MDDM(mX, mY)  
+
+% Computes the Martingale Difference Divergence Matrix (MDDM) between two
+% vector time series X and Y, as defined in:
+% Lee, C. E., & Shao, X. (2018). Martingale Difference Divergence Matrix and
+% Its Application to Dimension Reduction for Stationary Multivariate Time Series.
+
  [cn, cp] = size(mX);
 [~, cq] = size(mY);
 mMDDM = zeros(cq,cq);
