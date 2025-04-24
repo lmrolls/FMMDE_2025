@@ -35,12 +35,12 @@ addpath('subfunctions')
 % Set random number generator for replicability
 rng(1, 'twister');
 
-n      = 50;
-T      = 50;
+n      = 100;
+T      = 100;
 k0     = 1; 
 pval   = 0.05; 
 
-nIters = 1000;
+nIters = 200;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
