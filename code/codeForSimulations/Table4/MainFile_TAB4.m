@@ -21,6 +21,7 @@
 close all; clear all; clc;
 
 addpath('../factorEstimation');
+addpath('../DGPs');
 addpath('subfunctions')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -66,8 +67,7 @@ for k00 = 1:length(k0_start)
                 
                 mNfactors(rep,:) = [vNfactorsK0,vNfactorsRatio];
                 
-                
-                
+                    
             end
             
             out      = mean(mNfactors==3,1);
