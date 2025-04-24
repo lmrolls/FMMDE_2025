@@ -1,30 +1,42 @@
-%%#################################################################################
-% CODE USED TO GENERATE TABLES FROM 1 TO 3 IN THE PAPER
-% 
-% THIS SCRIPT DETAILS THREE EXTERNAL LOOPS OVER THE SIMULATION PARAMETERS
-% NAMELY: TRUE NUMBER OF FACTORS, DGP, THETA (SIGNAL TO NOISE PARAMETER)
-
-% THE 4TH INTERNAL LOOP CONDUCTS THE MONTE CARLO SIMULATION'S REPLICATIONS
-% THIS USES THE FUNCTION SimulFun() WHICH CONDUCTS DATA SIMULATION AND
-% FACTOR ESTIMATION
-
-% n:cross sectional dimension simulated data, T: time series dimension, k0: parameter MDDM
-% pval: critical value used in sequential testing procedure
-% mOutTest,mOutRAT: proportion of successful attempts in estimating of true number of factors
-% Sequential Test and Eigenvalue Ratio methods respectively
-%
-% meanOutTest, meanOutRAT: mean of the estimated number of factors
-% nIters: number of monte carlo exercise replications
-
-% r: variable in the first loop, selects the true number of factors in the DGP
-% DGP: Sets DGP from 1 to 3 in tables 1 to 3 in the paper 
-% thetaMethod: the parameter theta in the paper taking values
-% 1 ==> thetaMethod = 0.5*r
-% 2 ==> thetaMethod = r
-% 3 ==> thetaMethod = 3*r
-% 4 ==> thetaMethod = 5*r
-%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MONTE CARLO SIMULATION FOR FACTOR MODEL ESTIMATION
+%
+% Purpose:
+%   This script generates Tables 1 to 3 in the paper by simulating factor models 
+%   under varying parameters (true number of factors, DGP, signal-to-noise ratio) 
+%   and evaluating factor estimation accuracy using Sequential Testing and 
+%   Eigenvalue Ratio methods.
+%
+% Key Functionality:
+%   - Conducts Monte Carlo simulations with nested loops over:
+%     1. True number of factors (r)
+%     2. Data Generating Process (DGP)
+%     3. Signal-to-noise parameter (theta)
+%     4. Monte Carlo replications (via SimulFun)
+%   - Stores results in tables for export, comparing estimation success rates.
+%
+% Parameters:
+%   - n: Cross-sectional dimension (default: 100)
+%   - T: Time-series dimension (default: 100)
+%   - k0: Parameter for MDDM (default: 1)
+%   - pval: Critical value for sequential testing (default: 0.05)
+%   - nIters: Number of Monte Carlo replications (default: 200)
+%   - r: True number of factors (2 to 5)
+%   - DGP: Data Generating Process (1 to 3)
+%   - thetaMethod: Signal-to-noise parameter multiplier
+%       (1: 0.5*r, 2: r, 3: 3*r, 4: 5*r)
+%
+% Outputs:
+%   - finalTable: Table with estimation success rates for Sequential Test and 
+%                 Eigenvalue Ratio methods across parameter combinations.
+%
+% Notes:
+%   - Requires 'factorEstimation' and 'subfunctions' folders in the MATLAB path.
+%   - Random number generator seeded for replicability (rng(1, 'twister')).
+%   - Parallelized Monte Carlo loop (parfor) for efficiency.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 close all; clear all; clc;
 

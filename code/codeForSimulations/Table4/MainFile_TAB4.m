@@ -1,22 +1,33 @@
-%%#################################################################################
-% CODE USED TO GENERATE TABLE 4
+%%#########################################################################################
+% Monte Carlo Simulation for Factor Model Estimation (Table 4)
 %
-% NN_start: different cross section dimensions to loop over
-% TT_start: different time series dimensions to loop over
-% k0_start: different values of k0 to loop over
+% Purpose: 
+%   Generates data from a nonlinear factor model (EQ.5) with three latent factors
+%   and evaluates the performance of two factor estimation methods: Eigenvalue 
+%   Ratio and Sequential Testing.
 %
-% rmax: max number of estimated factors,
-% pval: critical value used in sequential testing procedure
-% nreps: number of monte carlo replications
+% Parameters:
+%   - NN_start: Cross-sectional dimensions [50, 100, 200]
+%   - TT_start: Time-series dimensions [50, 100, 200]
+%   - k0_start: Tuning parameter values [1, 10, 25]
+%   - rmax: Maximum number of estimated factors (10)
+%   - pval: Critical value for sequential testing (0.05)
+%   - nreps: Number of Monte Carlo replications (100)
 %
-% mOutRAT, mOutTest: Output of Table 4, proportion of successful attempts
-% in the estimation of the true number of factors rr in over the total
-% number of monte carlo replications
-% Using Eigenvalue Ratio and Sequential testing methodologies respectively
+% Outputs:
+%   - mOutRAT: Proportion of correct factor number estimates (3) using Eigenvalue Ratio
+%   - mOutTest: Proportion of correct factor number estimates (3) using Sequential Testing
 %
-% MAKES USE OF THE FUNCTION fLeeShaoNonLinear() which generates data from
-% the factor model in EQ.5
-%  THE FUNCTION GENERATES DATA FROM THREE LATENT FACTORS    
+% Dependencies:
+%   - fLeeShaoNonLinear(): Generates data from the factor model in EQ.5
+%   - factorMDDM4(): Computes Eigenvalue Ratio-based factor estimation
+%   - seqTest(): Performs sequential testing for factor estimation
+%   - standardize(): Standardizes input data
+%
+% Notes:
+%   - Random number generator set with rng(1, 'twister') for replicability
+%   - Results stored in mOutRAT and mOutTest for Table 4
+%
 %%#########################################################################################
 
 close all; clear all; clc;
