@@ -35,7 +35,7 @@ k0_start = [ 1 10 25];
 
 rmax  = 10;
 pval  = 0.05;
-nreps = 1000;
+nreps = 100;
 
 mOutRAT  = zeros(length(TT_start),length(NN_start),length(k0_start)); 
 mOutTest = zeros(length(TT_start),length(NN_start),length(k0_start));
