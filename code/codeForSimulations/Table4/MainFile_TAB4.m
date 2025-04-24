@@ -20,9 +20,7 @@
 
 close all; clear all; clc;
 
-addpath('../utils');
-addpath('../SW_MDDM');
-addpath('../numberF');
+addpath('../factorEstimation');
 addpath('subfunctions')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -37,7 +35,7 @@ k0_start = [ 1 10 25];
 
 rmax  = 10;
 pval  = 0.05;
-nreps = 10;
+nreps = 1000;
 
 mOutRAT  = zeros(length(TT_start),length(NN_start),length(k0_start)); 
 mOutTest = zeros(length(TT_start),length(NN_start),length(k0_start));
@@ -52,11 +50,11 @@ for k00 = 1:length(k0_start)
             disp(N)
             
             mNfactors = zeros(nreps,2);
-            for rep = 1:nreps
+            parfor rep = 1:nreps
                 disp(rep)
 
-                % substream = RandStream('mt19937ar', 'Seed', rep);
-                % RandStream.setGlobalStream(substream);
+                substream = RandStream('mt19937ar', 'Seed', rep);
+                RandStream.setGlobalStream(substream);
 
                 x                = fLeeShaoNonLinear(T,N);
                 mX               = standardize(x);    
@@ -88,7 +86,7 @@ end
 %  EXCEL TABLES PRODUCTION     %
 %                              %
 %==============================%
-filename = 'Simulation_Results_Ex4.xlsx';
+filename = 'Tab4.xlsx';
 sheet = 'Results';
 
 % Headers

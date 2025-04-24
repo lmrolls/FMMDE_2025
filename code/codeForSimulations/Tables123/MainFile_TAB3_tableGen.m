@@ -27,11 +27,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 close all; clear all; clc;
-addpath('../utils');
-addpath('../SW_MDDM');
-addpath('../numberF');
-addpath("subfunctions")
 
+addpath('../factorEstimation');
+addpath('subfunctions')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Set random number generator for replicability
