@@ -47,12 +47,12 @@ addpath('subfunctions')
 % Set random number generator for replicability
 rng(1, 'twister');
 
-n      = 100;
+n      = 50;
 T      = 100;
 k0     = 1; 
 pval   = 0.05; 
 
-nIters = 200;
+nIters = 50;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -153,7 +153,7 @@ sheet = 'Results';
 
 % Headers
 headers = {'', '','','','', 'Sequential Test', '', '', '', '','', 'Eigenvalue Ratio', '', '', ''};
-subheaders = {'r','',  'theta','','0.5r', 'r', '3r', '5r', '','', '0.5r', 'r', '3r', '5r'};
+subheaders = {'r/theta','',  '','','0.5r', 'r', '3r', '5r', '','', '0.5r', 'r', '3r', '5r'};
 
 % Write to Excel
 writecell(headers, filename, 'Sheet', sheet, 'Range', 'A3');
