@@ -26,7 +26,7 @@
 % - fLeeShao(): Generates data from the 3-factor model (Eq. 5).
 % - stockwatson2002(): Estimates factors using Stock-Watson (2002).
 % - factorMDDM2(): Estimates factors using FMMDE.
-% - factorLAM(): Estimates factors using LYB.
+% - factorLAM2(): Estimates factors using LYB.
 % - standardize(): Standardizes the input data.
 %
 % Output: Matrices of averaged MSFE ratios (MSFE^{FMMDE}/MSFE^{LYB}, MSFE^{FMMDE}/MSFE^{SW})
@@ -84,7 +84,7 @@ for TT = 1:length(TT_start)
             % FACTOR ESTIMATION
             [Fmddm] = factorMDDM2(Xt, k0, rr); % FMMDE
             [Fsw] = stockwatson2002(Xt, rr); % SW
-            [Flam] = factorLAM(Xt, k0, rr); % LYB
+            [Flam] = factorLAM2(Xt, k0, rr); % LYB
 
             for k = 1:N
                 yt = Xt(:, k);

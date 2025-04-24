@@ -85,7 +85,7 @@ k0=1;
 
                 [Fmddm]          = factorMDDM2(Xt, k0, rr); % FMMDE factors
                 [Fsw]            = stockwatson2002(Xt,rr);  % SW  factors
-                [Flam]           = factorLAM(Xt, k0, rr);   % LYB factors
+                [Flam]           = factorLAM2(Xt, k0, rr);   % LYB factors
 
                 for k=1:N % Loop over the n simulated variables
 

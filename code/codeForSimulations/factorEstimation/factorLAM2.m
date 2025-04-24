@@ -1,5 +1,5 @@
 
-function[fhat,Ahat,chat,ss,icstar] = factorLAM(Y,k0,r)
+function[fhat,Ahat,chat,ss,icstar] = factorLAM2(Y,k0,r)
 
 
 [n, p] = size(Y);
