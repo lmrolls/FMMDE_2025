@@ -132,6 +132,7 @@ disp('MSFE^{FMMDE}/MSFE^{LYB}:');
 GM_mse_md ./ GM_mse_lam
 disp('MSFE^{FMMDE}/MSFE^{SW}:');
 GM_mse_md ./ GM_mse_sw
-
+% Re-enable warning (optional)
+warning('on', 'MATLAB:rankDeficientMatrix');
 % Save results
 %save('table5_results.mat', 'GM_mse_sw', 'GM_mse_md', 'GM_mse_lam');

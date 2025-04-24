@@ -47,7 +47,7 @@ rng(1, 'twister');
 NN_start = [100 300 500]; % Cross-sectional dimensions
 TT_start = [200 500 1000]; % Time-series dimensions
 rr = 3; % Number of factors
-nreps = 1000; % Number of Monte Carlo replications
+nreps = 400; % Number of Monte Carlo replications
 k0 = 1;
 
 % Initialize cell arrays for MSE storage
@@ -134,8 +134,6 @@ GM_mse_md ./ GM_mse_sw
 disp('MSFE^{FMMDE}/MSFE^{LYB}:');
 GM_mse_md ./ GM_mse_lam
 
-% Save results
-save('table5_nonlinear_results.mat', 'GM_mse_sw', 'GM_mse_md', 'GM_mse_lam');
 
 % Re-enable warning (optional)
 warning('on', 'MATLAB:rankDeficientMatrix');
