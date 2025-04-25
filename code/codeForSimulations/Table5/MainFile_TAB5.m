@@ -230,3 +230,72 @@ disp('-------------------------------------------------------------');
 
 % Re-enable warning (optional)
 warning('on', 'MATLAB:rankDeficientMatrix');
+
+%%
+
+% Prepare data for Excel output mimicking LaTeX table horizontal structure
+% Create a table with two main columns (SW, LYB), each with Linear and Nonlinear sub-columns
+excel_data = cell(5, 13); % 5 rows (header + 3 N values + sub-header) x 13 columns (N + 2 models x 2 factor types x 3 T values)
+
+% Header row
+excel_data{1, 1} = '';
+excel_data{1, 2} = 'SW Model';
+excel_data{1, 5} = '';
+excel_data{1, 8} = 'LYB Model';
+excel_data{1, 11} = '';
+
+% Sub-header row (Linear and Nonlinear)
+excel_data{2, 1} = 'N';
+excel_data{2, 2} = 'Linear Factors';
+excel_data{2, 5} = 'Nonlinear Factors';
+excel_data{2, 8} = 'Linear Factors';
+excel_data{2, 11} = 'Nonlinear Factors';
+
+% T-value headers
+excel_data{3, 1} = '';
+excel_data{3, 2} = 'T=200';
+excel_data{3, 3} = 'T=500';
+excel_data{3, 4} = 'T=1000';
+excel_data{3, 5} = 'T=200';
+excel_data{3, 6} = 'T=500';
+excel_data{3, 7} = 'T=1000';
+excel_data{3, 8} = 'T=200';
+excel_data{3, 9} = 'T=500';
+excel_data{3, 10} = 'T=1000';
+excel_data{3, 11} = 'T=200';
+excel_data{3, 12} = 'T=500';
+excel_data{3, 13} = 'T=1000';
+
+% Data rows for N = 100, 300, 500
+for NN = 1:length(NN_start)
+    excel_data{3+NN, 1} = NN_start(NN);
+    % SW Model - Linear
+    excel_data{3+NN, 2} = sprintf('%.3f', rMSFE_SW_lin(NN, 1));
+    excel_data{3+NN, 3} = sprintf('%.3f', rMSFE_SW_lin(NN, 2));
+    excel_data{3+NN, 4} = sprintf('%.3f', rMSFE_SW_lin(NN, 3));
+    % SW Model - Nonlinear
+    excel_data{3+NN, 5} = sprintf('%.3f', rMSFE_SW_nonlin(NN, 1));
+    excel_data{3+NN, 6} = sprintf('%.3f', rMSFE_SW_nonlin(NN, 2));
+    excel_data{3+NN, 7} = sprintf('%.3f', rMSFE_SW_nonlin(NN, 3));
+    % LYB Model - Linear
+    excel_data{3+NN, 8} = sprintf('%.3f', rMSFE_LYB_lin(NN, 1));
+    excel_data{3+NN, 9} = sprintf('%.3f', rMSFE_LYB_lin(NN, 2));
+    excel_data{3+NN, 10} = sprintf('%.3f', rMSFE_LYB_lin(NN, 3));
+    % LYB Model - Nonlinear
+    excel_data{3+NN, 11} = sprintf('%.3f', rMSFE_LYB_nonlin(NN, 1));
+    excel_data{3+NN, 12} = sprintf('%.3f', rMSFE_LYB_nonlin(NN, 2));
+    excel_data{3+NN, 13} = sprintf('%.3f', rMSFE_LYB_nonlin(NN, 3));
+end
+
+% Convert cell array to table for Excel
+excel_table = cell2table(excel_data, 'VariableNames', {'N', 'SW_Linear_T200', 'SW_Linear_T500', 'SW_Linear_T1000', ...
+    'SW_Nonlinear_T200', 'SW_Nonlinear_T500', 'SW_Nonlinear_T1000', ...
+    'LYB_Linear_T200', 'LYB_Linear_T500', 'LYB_Linear_T1000', ...
+    'LYB_Nonlinear_T200', 'LYB_Nonlinear_T500', 'LYB_Nonlinear_T1000'});
+
+% Save to Excel
+writetable(excel_table, 'Table5_MSFE_Ratios.xlsx', 'Sheet', 'Table5', 'WriteVariableNames', false);
+
+disp('Results saved to Table5_MSFE_Ratios.xlsx');
+% Re-enable warning (optional)
+warning('on', 'MATLAB:rankDeficientMatrix');

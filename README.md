@@ -3,11 +3,13 @@ Reproducibility package for FMMDE
 
 # Reproducibility Package for [Paper Title]
 
-This repository contains the data, code, and documentation to reproduce the results in "[Paper Title]" by [Author(s)], submitted to [Journal Name]. The package implements a sequential statistical test using a factor model to generate results for Table 1 and Table 2.
+This repository contains the data, code, and documentation to reproduce the results in "Macroeconomic Forecasting using Factor Models with
+Martingale Difference Errors" by Luca Mattia Rolla and Alessandro Giovannelli, submitted to International Journal of Forecasting. 
+The package reproduces the paper content, tables and figures.
 
 ## Package Information
 - **Date Assembled**: April 23, 2025
-- **Author(s)**: [Your Name], [Collaborator Name]
+- **Author(s)**: Luca Mattia Rolla, Alessandro Giovannelli
 - **Contact**: [Your Email or ORCID], [Collaborator Email or ORCID]
 - **Repository URL**: https://github.com/your-username/replication_my_paper_2025
 
@@ -17,7 +19,6 @@ This repository contains the data, code, and documentation to reproduce the resu
     - `Tables123/`: Functions to generate Tables from 1 to 3 (e.g., `seqTest.m`, `run_tab1.m`).  
   - `tab2/`: Functions to generate Table 2 (e.g., `seqTest.m`, `run_tab2.m`).
   - `utils/`: Shared helper functions (e.g., `factorMDDM.m`, `testShao.m`).
-  - `startup.m`: Sets up MATLAB paths.
 - `data/`: Datasets.
   - `raw/`: Raw data (e.g., `dataset1.mat`).
   - `processed/`: Processed data (e.g., `cleaned_dataset1.mat`).
