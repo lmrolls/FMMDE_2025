@@ -25,7 +25,7 @@
 % Dependencies:
 % - fLeeShaoNonLinear(): Generates data from the 3-factor nonlinear model (Eq. 3 in the paper).
 % - stockwatson2002(): Estimates factors using Stock-Watson (2002).
-% - factorMDDM2(): Estimates factors using FMMDE.
+% - fixedFactorsMDDM(): Estimates factors using FMMDE for a prespecified number of factors.
 % - factorLAM2(): Estimates factors using LYB.
 % - standardize(): Standardizes the input data.
 %
@@ -83,7 +83,7 @@ for TT = 1:length(TT_start)
             Xout = x(end, :); % X_{t+1}
 
             % FACTOR ESTIMATION
-            [Fmddm] = factorMDDM2(Xt, k0, rr); % FMMDE
+            [Fmddm] = fixedFactorsMDDM(Xt, k0, rr); % FMMDE
             [Fsw] = stockwatson2002(Xt, rr); % SW
             [Flam] = factorLAM2(Xt, k0, rr); % LYB 
             

@@ -25,7 +25,7 @@
 % Dependencies:
 % - fLeeShao(): Generates data from the 3-factor model (Eq. 5 in the paper).
 % - stockwatson2002(): Estimates factors using Stock-Watson (2002).
-% - factorMDDM2(): Estimates factors using FMMDE.
+% - fixedFactorsMDDM(): Estimates factors using FMMDE for a prespecified number of factors.
 % - factorLAM2(): Estimates factors using LYB.
 % - standardize(): Standardizes the input data.
 %
@@ -46,7 +46,7 @@ rng(1, 'twister');
 NN_start = [100 300 500]; % Cross-sectional dimensions
 TT_start = [200 500 1000]; % Time-series dimensions
 rr = 3; % Number of factors
-nreps = 400; % Number of Monte Carlo replications
+nreps = 200; % Number of Monte Carlo replications
 k0 = 1;
 
 % Initialize cell arrays for MSE storage
@@ -82,9 +82,9 @@ for TT = 1:length(TT_start)
             Xout = x(end, :); % X_{t+1}
 
             % FACTOR ESTIMATION
-            [Fmddm] = factorMDDM2(Xt, k0, rr); % FMMDE
-            [Fsw] = stockwatson2002(Xt, rr); % SW
-            [Flam] = factorLAM2(Xt, k0, rr); % LYB
+            [Fmddm] = fixedFactorsMDDM(Xt, k0, rr); % FMMDE
+            [Fsw]   = stockwatson2002(Xt, rr); % SW
+            [Flam]  = factorLAM2(Xt, k0, rr); % LYB
 
             for k = 1:N
                 yt = Xt(:, k);
