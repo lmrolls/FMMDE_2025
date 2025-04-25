@@ -44,24 +44,24 @@ for k=1:k0                                    % k0:lags cumul. MDDM(pag 219)
     S = S + MDDM( Y(1:(n-k),:), Y((1+k):n,:) );       %cumulative MDDM(k0)
 end
 
-[eVec,eVal] = eig(S);                      %eigendec. cumulative MDDM(k0)
+[eVec, eVal] = eig(S);
 eVal = diag(eVal);
-R = floor((p/3));
-lambda = zeros(R,1);
+[eVal, idx] = sort(eVal, 'descend'); % Sort eigenvalues in descending order
+eVec = eVec(:, idx); % Reorder eigenvectors accordingly
 
-for i=1:R
-    lambda(i) = eVal(i+1)/eVal(i);         %lambda= ratios subsequent eigenVals
+R = floor((p/3));
+lambda = zeros(R, 1);
+for i = 1:R
+    lambda(i) = eVal(i) / eVal(i+1); % Ratio for largest eigenvalues
 end
 
-
-[~,argMin] =  min(lambda(1:R));                 % argmin of ratios 
-   icstar = (argMin);   
+[~, argMin] = max(lambda(1:R)); % Maximize ratio
+icstar = argMin;
 if icstar > r
     icstar = r;
 end
-% [~,argMin] =  min(lambda(2:R));                 % argmin of ratios 
-%    icstar = (argMin+1);                      %for estimating size factor process                              
-Ahat = eVec(:,(1:r));   
+
+Ahat = eVec(:, 1:r);
 
 
 % Components
