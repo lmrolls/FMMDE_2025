@@ -4,7 +4,7 @@ Reproducibility Package for Macroeconomic Forecasting using Factor Models with M
 ## Package Information
 - **Date Assembled**: April 23, 2025
 - **Author(s)**: Luca Mattia Rolla, Alessandro Giovannelli
-- **Contact**: Luca Mattia Rolla (lmrolla92@gmail.com), Alessandro Giovannelli (University of L'Aquila, Italy)
+- **Contact**: Luca Mattia Rolla (lmrolla92@gmail.com, University of Rome “Tor Vergata”, Italy), Alessandro Giovannelli (alessandro.giovannelli@univaq.it, University of L'Aquila, Italy)
 - **Repository URL**: https://github.com/lmrolls/FMMDE_2025
 
 ## Overview
@@ -111,9 +111,9 @@ This repository contains the code and documentation to reproduce the results in 
 
 ## Notes
 - Ensure MATLAB and required toolboxes are installed.
-- If data files are required but not included, contact lmrolla92@gmail.com or follow instructions in `data/external/non_sharable_data.md` (if applicable).
+- If data files are required but not included, contact lmrolla92@gmail.com or alessandro.giovannelli@univaq.it, or follow instructions in `data/external/non_sharable_data.md` (if applicable).
 - The `factorEstimation/` folder contains core methods (e.g., `factorMDDM.m`, `seqTest.m`) used in simulations.
-- Contact lmrolla92@gmail.com for questions or issues.
+- Contact lmrolla92@gmail.com or alessandro.giovannelli@univaq.it for questions or issues.
 
 ## License
 This package is licensed under the MIT License (see `LICENSE`).
