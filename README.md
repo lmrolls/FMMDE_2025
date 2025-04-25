@@ -1,101 +1,126 @@
 # FMMDE_2025
-Reproducibility package for FMMDE
-
-# Reproducibility Package for [Paper Title]
-
-This repository contains the data, code, and documentation to reproduce the results in "Macroeconomic Forecasting using Factor Models with
-Martingale Difference Errors" by Luca Mattia Rolla and Alessandro Giovannelli, submitted to International Journal of Forecasting. 
-The package reproduces the paper content, tables and figures.
+Reproducibility Package for Macroeconomic Forecasting using Factor Models with Martingale Difference Errors
 
 ## Package Information
 - **Date Assembled**: April 23, 2025
 - **Author(s)**: Luca Mattia Rolla, Alessandro Giovannelli
-- **Contact**: [Your Email or ORCID], [Collaborator Email or ORCID]
-- **Repository URL**: https://github.com/your-username/replication_my_paper_2025
+- **Contact**: Luca Mattia Rolla (lmrolla92@gmail.com), Alessandro Giovannelli (University of L'Aquila, Italy)
+- **Repository URL**: https://github.com/lmrolls/FMMDE_2025
+
+## Overview
+This repository contains the code and documentation to reproduce the results in "Macroeconomic Forecasting using Factor Models with Martingale Difference Errors" by Luca Mattia Rolla and Alessandro Giovannelli, submitted to *International Journal of Forecasting*. The package reproduces the paper's tables (1–5) and figures.
 
 ## Repository Structure
 - `code/`: MATLAB scripts and functions.
-  - `codeForSimulations/`: Functions to perform simulations present in the paper.
-    - `Tables123/`: Functions to generate Tables from 1 to 3 (e.g., `seqTest.m`, `run_tab1.m`).  
-  - `tab2/`: Functions to generate Table 2 (e.g., `seqTest.m`, `run_tab2.m`).
-  - `utils/`: Shared helper functions (e.g., `factorMDDM.m`, `testShao.m`).
-- `data/`: Datasets.
-  - `raw/`: Raw data (e.g., `dataset1.mat`).
-  - `processed/`: Processed data (e.g., `cleaned_dataset1.mat`).
-  - `external/`: Instructions for non-sharable data.
-- `output/`: Generated results.
-  - `tables/`: Tables (e.g., `table1.csv`, `table2.csv`).
-  - `figures/`: Figures (if applicable).
-- `environment/`: Computing environment details.
-  - `toolbox_list.txt`: Required MATLAB toolboxes.
-  - `setup_instructions.md`: Detailed setup instructions.
+  - `codeForSimulations/`: Scripts for simulations.
+    - `DGPs/`: Data-generating process functions.
+      - `fLeeShao.m`: Linear DGP.
+      - `fLeeShaoNonLinear.m`: Nonlinear DGP.
+    - `factorEstimation/`: Factor estimation methods.
+      - `factorLAM.m`, `factorMDDM.m`, `factorMDDM4.m`, `fixedFactorLAM.m`, `fixedFactorsMDDM.m`, `MDDM.m`, `seqTest.m`, `stockwatson2002.m`: Functions for factor estimation and testing.
+    - `Table4/`: Scripts for Table 4.
+      - `MainFile_TAB4.m`: Main script.
+      - `Tab4.xlsx`: Output file.
+      - `subfunctions/standardize.m`: Helper function.
+    - `Table5/`: Scripts for Table 5.
+      - `MainFile_TAB5.m`, `MainFile_TAB5_LINEAR.m`, `MainFile_TAB5_NONLINEAR.m`: Main scripts.
+      - `subfunctions/standardize.m`: Helper function.
+    - `Tables123/`: Scripts for Tables 1–3.
+      - `MainFile_TAB123.m`: Main script.
+      - `format.xlsx`, `Simulation_Results.xlsx`: Output files.
+      - `subfunctions/factorSim.m`, `SimulFun.m`, `standardize.m`: Helper functions.
+    - `utils/`: Shared utility functions.
+      - `baingcriterion2002.m`, `hallinliskacriterion2007.m`, `mrsq.m`, `numdynamic.m`, `numstatic.m`, `prepare_missing.m`: Helper functions for factor analysis and data preparation.
+  - `plotsLuca/`: Scripts and data for figures.
+    - `nfactors.mat`, `nfactorsBAI.mat`, `nfactorsEIG.mat`: Data for factor plots.
+    - `plots.m`: Script to generate figures.
 - `README.md`: This file.
 - `LICENSE`: MIT License.
-- `manuscript.pdf`: Final manuscript (optional).
 
 ## Computing Environment
-- **Software**: MATLAB R2023b
+- **Software**: MATLAB R2023b or later
 - **Toolboxes**:
   - Statistics and Machine Learning Toolbox (12.4)
   - Linear Algebra (MATLAB core)
 - **License**: MIT License (see `LICENSE`)
 - **Hardware**: Standard laptop (e.g., Intel i7, 16GB RAM, Windows 10)
-- **Expected Runtime**: Approximately 15 minutes per table on a standard laptop
+- **Expected Runtime**: Approximately 15–30 minutes per table, depending on hardware
 - **Setup Instructions**:
   1. Install MATLAB R2023b or later.
-  2. Ensure required toolboxes are installed (see `environment/toolbox_list.txt`).
-  3. Clone this repository using GitHub Desktop or download as a ZIP.
-  4. Open MATLAB and set the working directory to `code/`.
-  5. Run `startup.m` to set paths: `run('startup.m')`.
+  2. Ensure required toolboxes are installed (see above).
+  3. Clone this repository: `git clone https://github.com/lmrolls/FMMDE_2025.git` or download as a ZIP.
+  4. Open MATLAB and set the working directory to `code/`:
+     ```matlab
+     cd('path/to/FMMDE_2025/code');
+     ```
+  5. Add paths manually or create a `startup.m` script (not included) to add all subfolders:
+     ```matlab
+     addpath(genpath('codeForSimulations'));
+     ```
 
 ## Data
-- **Sharable Data**:
-  - `data/raw/dataset1.mat`: [Description, e.g., Financial time series data, 1000x50 matrix].
-  - Format: MATLAB `.mat`, processed by `code/tab1/run_tab1.m` and `code/tab2/run_tab2.m`.
-- **Non-Sharable Data** (if applicable):
-  - See `data/external/non_sharable_data.md` for access instructions.
-  - Example: `dataset2.mat` requires an NDA from [Provider Name].
-- **Intermediary Data**:
-  - `data/processed/cleaned_dataset1.mat`: Generated by preprocessing scripts (included for reviewer convenience).
+- **Sharable Data**: Not explicitly included in the provided structure. If datasets (e.g., `.mat` files) are required, they should be placed in a `data/` folder with descriptions.
+- **Non-Sharable Data**: If applicable, include access instructions in a `data/external/non_sharable_data.md` file.
+- **Intermediary Data**: Outputs like `Tab4.xlsx` and `Simulation_Results.xlsx` are generated by the scripts and saved in their respective folders.
 
 ## Running the Reproducibility Check
-- **Computer Used**: [e.g., Intel i7, 16GB RAM, Windows 10]
-- **Expected Runtime**: [e.g., 15 minutes for Table 1, 15 minutes for Table 2]
+- **Computer Used**: Standard laptop (e.g., Intel i7, 16GB RAM, Windows 10)
+- **Expected Runtime**:
+  - Tables 1–3: ~15–20 minutes each
+  - Table 4: ~15 minutes
+  - Table 5: ~20–30 minutes (varies by linear/nonlinear)
+  - Figures: ~5–10 minutes
 - **Special Setup**: None (no GPU required)
 - **Instructions**:
-  1. Clone the repository: `https://github.com/your-username/replication_my_paper_2025`.
+  1. Clone the repository: `git clone https://github.com/lmrolls/FMMDE_2025.git`.
   2. Open MATLAB and set the working directory to `code/`:
      ```matlab
-     cd('path/to/replication_my_paper_2025/code');
+     cd('path/to/FMMDE_2025/code');
      ```
-  3. Run `startup.m` to set paths:
+  3. Add paths:
      ```matlab
-     run('startup.m');
+     addpath(genpath('codeForSimulations'));
      ```
   4. Run analysis scripts:
-     - For Table 1:
+     - For Tables 1–3:
        ```matlab
-       run('tab1/run_tab1.m');
+       run('codeForSimulations/Tables123/MainFile_TAB123.m');
        ```
-     - For Table 2:
+       Outputs: `codeForSimulations/Tables123/Simulation_Results.xlsx`
+     - For Table 4:
        ```matlab
-       run('tab2/run_tab2.m');
+       run('codeForSimulations/Table4/MainFile_TAB4.m');
        ```
-  5. Outputs will be saved in `output/tables/` (e.g., `table1.csv`, `table2.csv`).
+       Output: `codeForSimulations/Table4/Tab4.xlsx`
+     - For Table 5:
+       ```matlab
+       run('codeForSimulations/Table5/MainFile_TAB5.m');
+       run('codeForSimulations/Table5/MainFile_TAB5_LINEAR.m');
+       run('codeForSimulations/Table5/MainFile_TAB5_NONLINEAR.m');
+       ```
+       Outputs: Saved in `codeForSimulations/Table5/`
+     - For Figures:
+       ```matlab
+       run('plotsLuca/plots.m');
+       ```
+       Outputs: Figures generated from `nfactors.mat`, `nfactorsBAI.mat`, `nfactorsEIG.mat`
+  5. Outputs are saved in their respective folders (e.g., `Tables123/`, `Table4/`, `Table5/`).
 
 ## Mapping Code to Paper Outputs
-- **Table 1**: Generated by `code/tab1/run_tab1.m` using `seqTest` with `esta = 'te'`. Output: `output/tables/table1.csv` (p-values for factor significance).
-- **Table 2**: Generated by `code/tab2/run_tab2.m` using `seqTest` with `esta = 'no'`. Output: `output/tables/table2.csv` (p-values for factor significance).
+- **Tables 1–3**: Generated by `codeForSimulations/Tables123/MainFile_TAB123.m` using functions like `factorSim.m` and `SimulFun.m`. Output: `Simulation_Results.xlsx`.
+- **Table 4**: Generated by `codeForSimulations/Table4/MainFile_TAB4.m` using `standardize.m`. Output: `Tab4.xlsx`.
+- **Table 5**: Generated by `codeForSimulations/Table5/MainFile_TAB5.m`, `MainFile_TAB5_LINEAR.m`, and `MainFile_TAB5_NONLINEAR.m` using `standardize.m`. Outputs: Saved in `Table5/`.
+- **Figures**: Generated by `plotsLuca/plots.m` using `nfactors.mat`, `nfactorsBAI.mat`, and `nfactorsEIG.mat`.
 
 ## Notes
 - Ensure MATLAB and required toolboxes are installed.
-- For non-sharable data, follow instructions in `data/external/non_sharable_data.md`.
-- Intermediary datasets are included to facilitate verification if raw data access is restricted.
-- The `utils/` folder contains helper functions (e.g., `factorMDDM.m`) used by both `tab1/` and `tab2/`.
-- Contact [Your Email] for questions or data access issues.
+- If data files are required but not included, contact lmrolla92@gmail.com or follow instructions in `data/external/non_sharable_data.md` (if applicable).
+- The `utils/` folder contains shared functions (e.g., `baingcriterion2002.m`, `hallinliskacriterion2007.m`) used across tables.
+- The `factorEstimation/` folder contains core methods (e.g., `factorMDDM.m`, `seqTest.m`) used in simulations.
+- Contact lmrolla92@gmail.com for questions or issues.
 
 ## License
 This package is licensed under the MIT License (see `LICENSE`).
 
 ## Acknowledgments
-- [Optional: Acknowledge funding, collaborators, or data providers]
+The authors are grateful to Tommaso Proietti for his valuable and insightful comments, which led to several improvements in both the presentation and the content of the paper. The authors are also grateful to the participants of the 41st International Symposium on Forecasting 2022. Alessandro Giovannelli gratefully acknowledges financial support from the Italian Ministry of Education, University and Research, Progetti di Ricerca di Interesse Nazionale, research project 2020-2023, project 2020N9YFFE.
