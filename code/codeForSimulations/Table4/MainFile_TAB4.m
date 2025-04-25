@@ -20,7 +20,12 @@
 %
 % Dependencies:
 %   - fLeeShaoNonLinear(): Generates data from the factor model in EQ.3 in
-%   the paper
+%     the paper, corresonding to a three-dimensional factor model as described
+%     in Example 6 of Lee & Shao (2018).
+%     References:
+%     Lee, J., & Shao, X. (2018). Martingale Difference divergence matrix and its application
+%     to dimension reduction for stationary multivariate time series. Journal of the
+%     American Statistical Association.
 %   - factorMDDM4(): Computes Eigenvalue Ratio-based factor estimation
 %   - seqTest(): Performs sequential testing for factor estimation
 %   - standardize(): Standardizes input data
