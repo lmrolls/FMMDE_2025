@@ -48,7 +48,7 @@ addpath('subfunctions')
 rng(1, 'twister');
 
 n      = 50;
-T      = 100;
+T      = 50;
 k0     = 1; 
 pval   = 0.05; 
 
