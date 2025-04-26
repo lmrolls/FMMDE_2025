@@ -1,4 +1,4 @@
-# Macroeconomic Forecasting with FMM	DE
+# Macroeconomic Forecasting with FMMDE
 Reproducibility Package for Macroeconomic Forecasting using Factor Models with Martingale Difference Errors
 
 ## Package Information
@@ -27,9 +27,10 @@ This repository contains the code and documentation to reproduce the results in 
       - `Table5_MSFE_Ratios.xlsx`: Output file.
       - `subfunctions/standardize.m`: Helper function.
     - `Tables123/`: Scripts for Tables 1–3.
-      - `MainFile_TAB123.m`: Main script.
-      - `format.xlsx`, `Simulation_Results.xlsx`: Output files.
-      - `subfunctions/factorSim.m`, `SimulFun.m`, `standardize.m`: Helper functions.
+      - **Description**: Contains scripts to generate Tables 1–3 via Monte Carlo simulations evaluating factor model estimation accuracy under varying parameters (true number of factors, data-generating process, signal-to-noise ratio, and sample sizes). The main script conducts simulations with nested loops over sample sizes (n=50, T=50 or T=100), true number of factors (r=2 to 5), DGPs (1 to 3), signal-to-noise parameters (theta: 0.5*r, r, 3*r, 5*r), and 1000 Monte Carlo replications using `SimulFun.m`. It employs Sequential Testing and Eigenvalue Ratio methods, with parameters like MDDM (k0=1) and p-value (0.05). Results include empirical probabilities displayed in the console (matching LaTeX table format) and exported to Excel.
+      - `MainFile_TAB123.m`: Main script for Monte Carlo simulations.
+      - `format.xlsx`, `Simulation_Results.xlsx`: Output files containing simulation results for both sample sizes (n=50, T=50 and n=50, T=100).
+      - `subfunctions/factorSim.m`, `SimulFun.m`, `standardize.m`: Helper functions for simulations and data standardization.
   - `plotsLuca/`: Scripts and data for figures.
     - `nfactors.mat`, `nfactorsBAI.mat`, `nfactorsEIG.mat`: Data for factor plots.
     - `plots.m`: Script to generate figures.
@@ -50,7 +51,7 @@ This repository contains the code and documentation to reproduce the results in 
 - **Expected Runtime**: Approximately 20–40 minutes per table, depending on the specific script and dataset size, and 10–15 minutes for figures, using the Intel i7-9700 system.
 - **Setup Instructions**:
   1. Install MATLAB R2023b or later.
-  2. Ensure required toolboxes are installed (see above).
+  2. Ensure required toolboxes instalado (see above).
   3. Clone this repository: `git clone https://github.com/lmrolls/FMMDE_2025.git` or download as a ZIP.
   4. Open MATLAB and set the working directory to `code/`:
      ```matlab
