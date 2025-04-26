@@ -83,7 +83,7 @@ finalTable = table(sequentialTest_n50_T50, eigenvalueRatio_n50_T50, ...
 %           MONTE CARLO SIMULATION CODE
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+tic
 for nt = 1:length(n_values)
     n = n_values(nt);
     T = T_values(nt);
@@ -102,7 +102,7 @@ for nt = 1:length(n_values)
                     RandStream.setGlobalStream(substream);
                     
                     out(k, :) = SimulFun(T, n, k0, r, thetaMethod, DGP, pval);
-                    disp([k, thetaMethod, DGP, r, n, T]);
+                    %disp([k, thetaMethod, DGP, r, n, T]);
                 end
                 disp(['Mean success rate (r = ', num2str(r), ', DGP = ', num2str(DGP), ...
                       ', thetaMethod = ', num2str(thetaMethod), '): ', ...
@@ -158,6 +158,7 @@ for nt = 1:length(n_values)
         r = r + 1;
     end
 end
+toc
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

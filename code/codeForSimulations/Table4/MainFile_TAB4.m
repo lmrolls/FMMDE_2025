@@ -79,7 +79,7 @@ for k00 = 1:length(k0_start)
                 mX               = standardize(x);    
                 
                 [~,~,~,~,icstar] = factorMDDM4(mX, k0, rmax);
-                vPvals           = seqTest(mX,300,pval,k0);
+                vPvals           = seqTest(mX,499,pval,k0);
                 vNfactorsK0      = sum(vPvals<=pval);
                 vNfactorsRatio   = icstar;       
                 
