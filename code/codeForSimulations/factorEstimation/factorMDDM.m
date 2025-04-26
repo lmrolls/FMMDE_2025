@@ -3,7 +3,7 @@
 % Description:
 %   Estimates a factor model for a stationary multivariate time series using
 %   the cumulative Martingale Difference Divergence Matrix (CMDDM), as
-%   described in Chung & Shao (2018). The function computes the CMDDM over
+%   described in Lee & Shao (2018). The function computes the CMDDM over
 %   k0 lags, performs spectral decomposition, and estimates the factor
 %   loadings, factors, and common component. It also estimates the number of
 %   factors using an eigenvalue ratio method.

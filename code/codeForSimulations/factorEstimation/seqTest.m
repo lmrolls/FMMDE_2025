@@ -66,16 +66,12 @@
 %     application to dimension reduction for stationary multivariate time series.
 %   - Wang, G., Zhu, K., & W., & Shao, X. (2022). Testing for the Martingale Difference
 %     Hypothesis in Multivariate Time Series Models.
-%     - Gao, J., Pan, G., & Yang, Y. (2021). Modeling and estimation of high-dimensional
-%     factor models.
 %   - Lam, C., & Yao, Q. (2011). Factor modeling for high-dimensional time series.
 %   - Wu, C. F. J. (1986). Jackknife, bootstrap and other resampling methods in
 %     regression analysis.
 %   - Liu, R. Y. (1988). Bootstrap procedures under some non-I.I.D. models.
 %   - Mammen, E. (1993). Bootstrap and wild bootstrap for high dimensional linear
 %     models.
-%   - Escanciano, J. C., & Velasco, C. (2006). Generalized spectral tests for the
-%     martingale difference hypothesis.
 %
 % Author: [Luca Mattia Rolla, Università di Tor Vergata]
 
