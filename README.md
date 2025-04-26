@@ -52,7 +52,7 @@ This repository contains the code and documentation to reproduce the results in 
 - `README.md`: This file.
 - `LICENSE`: MIT License.
 
-## Computing Environment
+## Computing Environment for Simulations
 - **Software**: MATLAB R2023b or later
 - **Toolboxes**:
   - Statistics and Machine Learning Toolbox (12.4)
@@ -64,7 +64,7 @@ This repository contains the code and documentation to reproduce the results in 
   - **Storage**: 512 GB SSD
   - **Operating System**: Windows 10
 - **Setup Instructions**:
-  1. Install MATLAB R2023b or later.
+  1. Install MATLAB R2021a or later.
   2. Ensure required toolboxes are installed (see above).
   3. Clone this repository: `git clone https://github.com/lmrolls/Macroeconomic-Forecasting-with-FMMDE.git` or download as a ZIP.
   4. Open MATLAB and set the working directory to `code/`:
