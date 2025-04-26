@@ -57,6 +57,7 @@ This repository contains the code and documentation to reproduce the results in 
 - **Toolboxes**:
   - Statistics and Machine Learning Toolbox (12.4)
   - Linear Algebra (MATLAB core)
+  - Parallel Computing Toolbox
 - **License**: MIT License (see `LICENSE`)
 - **Hardware**: Tested on a desktop computer with the following specifications:
   - **CPU**: Intel Core i7-9700 (8 cores, 8 threads, 3.00 GHz base, up to 4.70 GHz turbo)
@@ -75,6 +76,7 @@ This repository contains the code and documentation to reproduce the results in 
      ```matlab
      addpath(genpath('codeForSimulations'));
      ```
+## Computing Environment for the Empirical Analysis
 
 ## Data
 - **Sharable Data**: Not explicitly included in the provided structure. If datasets (e.g., `.mat` files) are required, they should be placed in a `data/` folder with descriptions.
