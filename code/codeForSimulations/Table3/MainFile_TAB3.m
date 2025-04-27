@@ -43,7 +43,7 @@
 close all; clear all; clc;
 
 addpath('../factorEstimation');
-addpath('subfunctions')
+addpath('../subfunctionsTAB123')
 
 % Set random number generator for replicability
 rng(1, 'twister');
