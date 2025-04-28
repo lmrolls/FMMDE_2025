@@ -45,7 +45,7 @@ addpath('../factorEstimation');
 addpath('../subfunctionsTAB123')
 
 % Set random number generator for replicability
-rng(1, 'twister');
+%rng(1, 'twister');
 
 % Parameters
 n_values = [50,50]; % Cross-sectional dimension
@@ -100,8 +100,8 @@ for nt = 1:length(n_values)
                 out = NaN(nIters, 2);
                 
                 parfor k = 1:nIters % Monte Carlo replications
-                    substream = RandStream('mt19937ar', 'Seed', k);
-                    RandStream.setGlobalStream(substream);
+%                     substream = RandStream('mt19937ar', 'Seed', k);
+%                     RandStream.setGlobalStream(substream);
                     
                     out(k, :) = SimulFun(T, n, k0, r, thetaMethod, DGP, pval, bootIter, cut);
                     %disp([k, thetaMethod, DGP, r, n, T]);
