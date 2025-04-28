@@ -50,9 +50,11 @@ rng(1, 'twister');
 % Parameters
 n_values = [50,50]; % Cross-sectional dimension
 T_values = [50, 100]; % Time-series dimensions
-k0 = 1; 
-pval = 0.05; 
-nIters = 1000; % Number of Monte Carlo replications (as per LaTeX: 1000)
+k0     = 1; 
+pval   = 0.05; 
+nIters = 300; % Number of Monte Carlo replications (as per LaTeX: 1000)
+bootIter = 300;
+cut    = true;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -101,7 +103,7 @@ for nt = 1:length(n_values)
                     substream = RandStream('mt19937ar', 'Seed', k);
                     RandStream.setGlobalStream(substream);
                     
-                    out(k, :) = SimulFun(T, n, k0, r, thetaMethod, DGP, pval);
+                    out(k, :) = SimulFun(T, n, k0, r, thetaMethod, DGP, pval, bootIter, cut);
                     %disp([k, thetaMethod, DGP, r, n, T]);
                 end
                 disp(['Mean success rate (r = ', num2str(r), ', DGP = ', num2str(DGP), ...

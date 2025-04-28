@@ -75,7 +75,7 @@
 %
 % Author: [Luca Mattia Rolla, Università di Tor Vergata]
 
-function[vPvals,out] = seqTest(Y,B,crit,k0,boot)   
+function[vPvals,out] = seqTest(Y,B,crit,k0,boot,cut)   
 
 if nargin == 4
   boot = "radem";
@@ -86,7 +86,11 @@ r=15;
 [F,Ahat,~] = factorMDDM(Y,k0,r);
 
 [T,colsF] = size(F); vPvals = NaN(colsF,1);
- %colsF= floor(colsF/3);
+
+if cut == 1
+    colsF= floor(colsF/3);
+end
+
  F = F(:,1:colsF); Ahat = Ahat(:,1:colsF);
 
 if boot == "radem"

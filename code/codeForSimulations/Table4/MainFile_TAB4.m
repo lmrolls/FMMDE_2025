@@ -45,7 +45,7 @@ addpath('subfunctions')
 
 
 % Set random number generator for replicability
-rng(1, 'twister');
+% rng(1, 'twister');
 
 
 NN_start    = [50 100 200];
@@ -54,7 +54,8 @@ k0_start = [ 1 10 25];
 
 rmax  = 10;
 pval  = 0.05;
-nreps = 1000;
+nreps = 300;
+cut   = 1;
 
 mOutRAT  = zeros(length(TT_start),length(NN_start),length(k0_start)); 
 mOutTest = zeros(length(TT_start),length(NN_start),length(k0_start));
@@ -72,14 +73,14 @@ for k00 = 1:length(k0_start)
             parfor rep = 1:nreps
                 disp(rep)
 
-                substream = RandStream('mt19937ar', 'Seed', rep);
-                RandStream.setGlobalStream(substream);
+%                 substream = RandStream('mt19937ar', 'Seed', rep);
+%                 RandStream.setGlobalStream(substream);
 
                 x                = fLeeShaoNonLinear(T,N);
                 mX               = standardize(x);    
                 
                 [~,~,~,~,icstar] = factorMDDMtab4(mX, k0, rmax);
-                vPvals           = seqTest(mX,499,pval,k0);
+                vPvals           = seqTest(mX,300,pval,k0,"radem",cut);
                 vNfactorsK0      = sum(vPvals<=pval);
                 vNfactorsRatio   = icstar;       
                 

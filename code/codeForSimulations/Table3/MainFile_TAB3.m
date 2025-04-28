@@ -53,7 +53,9 @@ n_values = [200,100]; % Cross-sectional dimension
 T_values = [100, 200]; % Time-series dimensions
 k0 = 1; 
 pval = 0.05; 
-nIters = 1000; % Number of Monte Carlo replications (as per LaTeX: 1000)
+nIters = 300; % Number of Monte Carlo replications (as per LaTeX: 1000)
+bootIter = 300;
+cut = true;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -102,7 +104,7 @@ for nt = 1:length(n_values)
                     substream = RandStream('mt19937ar', 'Seed', k);
                     RandStream.setGlobalStream(substream);
                     
-                    out(k, :) = SimulFun(T, n, k0, r, thetaMethod, DGP, pval);
+                    out(k, :) = SimulFun(T, n, k0, r, thetaMethod, DGP, pval, bootIter, cut);
                     %disp([k, thetaMethod, DGP, r, n, T]);
                 end
                 disp(['Mean success rate (r = ', num2str(r), ', DGP = ', num2str(DGP), ...
@@ -337,4 +339,11 @@ for i = 1:length(r_values)
         
         % Write to Excel
         writecell({r}, filename, 'Sheet', sheet, 'Range', sprintf('A%d', row));
-        writecell({dgp}, filename, '
+        writecell({dgp}, filename, 'Sheet', sheet, 'Range', sprintf('B%d', row));
+        writecell(seq_data_str, filename, 'Sheet', sheet, 'Range', sprintf('C%d', row));
+        writecell(eigen_data_str, filename, 'Sheet', sheet, 'Range', sprintf('I%d', row));
+    end
+    row_start = row_start + 1; % Add empty row between r values
+end
+
+disp('Results saved to Simulation_Results.xlsx');

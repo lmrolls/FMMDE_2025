@@ -38,7 +38,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function[mNfactors,vPvals] = SimulFun(T,n,k0,r,theta,DGP,pval) 
+function[mNfactors,vPvals] = SimulFun(T,n,k0,r,theta,DGP,pval, bootIter, cut) 
 
 mX = factorSim(T,n,r,theta,DGP);
 mX = standardize(mX);
@@ -46,7 +46,7 @@ rmax = 10;
 
 
 [~,~,~,~,icstar] = factorMDDM(mX, k0, rmax);
-vPvals=seqTest(mX,499,pval,k0); %  
+vPvals           = seqTest(mX,bootIter,pval,k0,"radem",cut); %  
 vNfactorsK0      = sum(vPvals<=pval);
 vNfactorsRatio   = icstar;
 
