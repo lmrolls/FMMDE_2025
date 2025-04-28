@@ -73,7 +73,7 @@ for k00 = 1:length(k0_start)
             
             mNfactors = zeros(nreps,2);
             parfor rep = 1:nreps
-                disp(['rep=','  ',num2str(rep),'  ','T=','  ',num2str(T),'  ','N=','  ',num2str(N),'  ','k0=','  ',num2str(k0)])
+                disp(['rep=',numer2string(rep),'T=',numer2string(T),'N=',numer2string(N),'k0=',numer2string(k0)])
 
 %                 substream = RandStream('mt19937ar', 'Seed', rep);
 %                 RandStream.setGlobalStream(substream);
