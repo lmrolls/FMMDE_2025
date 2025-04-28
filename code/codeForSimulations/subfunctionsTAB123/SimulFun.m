@@ -18,6 +18,12 @@
 %       - 4: theta = 5*r
 %   - DGP: Data Generating Process type (scalar, 1 to 3)
 %   - pval: Critical value for sequential testing (scalar)
+%   - bootIter: Number of bootstrap replications for sequential testing 
+%   - cut: logical value, true in the case we only consider a fraction (one
+%     third of n) of the estimated factors in the bootstrap mechanism of the sequential testing procedure. 
+%     It decreases computing times drastically at the cost of lowered precision of the factor selection procedure 
+%     as detailed in the Appendix.
+%
 %
 % Outputs:
 %   - mNfactors: 1x2 vector containing estimated number of factors

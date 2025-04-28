@@ -23,6 +23,12 @@
 %   - k0: Parameter for MDDM (default: 1)
 %   - pval: Critical value for sequential testing (default: 0.05)
 %   - nIters: Number of Monte Carlo replications (default: 1000)
+%   - bootIter: Number of bootstrap replications for sequential testing (default 300)
+%   - cut: logical value, true in the case we only consider a fraction (one
+%     third of n) of the estimated factors in the bootstrap mechanism of the sequential testing procedure. 
+%     It decreases computing times drastically at the cost of lowered precision of the factor selection procedure 
+%     as detailed in the Appendix.
+%
 %   - r: True number of factors (2 to 5)
 %   - DGP: Data Generating Process (1 to 3)
 %   - thetaMethod: Signal-to-noise parameter multiplier

@@ -26,8 +26,13 @@
 %   B     - Number of bootstrap replicates for p-value approximation.
 %   crit  - Critical p-value threshold (e.g., 0.05 for 5% significance level).
 %   k0    - Number of lags for cumulative MDDM in factor model estimation.
-%   boot  - (Optional) Bootstrap type: 'radem' for Rademacher (default) or 'esc' for
+%   boot  - Bootstrap type: 'radem' for Rademacher (default) or 'esc' for
 %           Mammen distribution.
+%   cut   - logical value, true in the case we only consider a fraction (one
+%           third of n) of the estimated factors in the bootstrap mechanism of the sequential testing procedure. 
+%           It decreases computing times drastically at the cost of lowered precision of the factor selection procedure 
+%           as detailed in the Appendix.
+%
 %
 % Outputs:
 %   vPvals - Vector of p-values for each tested component P_{i,t}. Untested components
