@@ -84,6 +84,7 @@ function[vPvals,out] = seqTest(Y,B,crit,k0,boot,cut)
 
 if nargin == 4
   boot = "radem";
+  cut  = 0;
 end
 
 r=15;
@@ -158,8 +159,11 @@ for k=1:k0                                    % k0:lags cumul. MDDM(pag 219)
     S = S + MDDM( Y(1:(n-k),:), Y((1+k):n,:) );       %cumulative MDDM(k0)
 end
 
-[eVec,~] = eig(S);                           %eigendec. cumulative MDDM(k0)
+[eVec,eVal] = eig(S);                           %eigendec. cumulative MDDM(k0)
 
+eVal = diag(eVal);
+[~, idx] = sort(eVal, 'descend'); % Sort eigenvalues in descending order
+eVec = eVec(:, idx); % Reorder eigenvectors accordingly
 Ahat = eVec(:,(1:p));   
 
 
