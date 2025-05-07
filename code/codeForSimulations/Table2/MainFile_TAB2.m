@@ -58,7 +58,7 @@ n_values = [100,100]; % Cross-sectional dimension
 T_values = [50, 100]; % Time-series dimensions
 k0 = 1; 
 pval = 0.05; 
-nIters = 300; % Number of Monte Carlo replications (as per LaTeX: 1000)
+nIters = 100; % Number of Monte Carlo replications (as per LaTeX: 1000)
 bootIter = 300;
 cut = true;
 

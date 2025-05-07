@@ -14,6 +14,8 @@
 %   - B: Number of bootstrap replicates for p-value approximation in sequential testing.
 %   - pval: Critical value for sequential testing (0.05)
 %   - nreps: Number of Monte Carlo replications (100)
+%   boot  - Bootstrap type: 'radem' for Rademacher (default) or 'esc' for
+%           Mammen distribution.
 %   - cut:  true in the case we only consider a fraction (one
 %           third of n) of the estimated factors in the bootstrap
 %           mechanism of the sequential testing procedure. 
@@ -62,8 +64,9 @@ k0_start = [ 1 10 25];
 rmax  = 10;
 B     = 300;
 pval  = 0.05;
-nreps = 300;
-cut   = true;
+cut   = false;
+boot  = "radem";
+nreps = 100;
 
 mOutRAT  = zeros(length(TT_start),length(NN_start),length(k0_start)); 
 mOutTest = zeros(length(TT_start),length(NN_start),length(k0_start));
@@ -90,7 +93,7 @@ for k00 = 1:length(k0_start)
                 mX               = standardize(x);    
                 
                 [~,~,~,~,icstar] = factorMDDMtab4(mX, k0, rmax);
-                vPvals           = seqTest(mX,B,pval,k0,"radem",cut);
+                vPvals           = seqTest(mX,B,pval,k0,boot,cut);
                 vNfactorsK0      = sum(vPvals<=pval);
                 vNfactorsRatio   = icstar;       
                 

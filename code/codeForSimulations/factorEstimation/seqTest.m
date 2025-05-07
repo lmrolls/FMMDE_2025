@@ -83,8 +83,10 @@
 function[vPvals,out] = seqTest(Y,B,crit,k0,boot,cut)   
 
 if nargin == 4
-  boot = "radem";
-  cut  = 0;
+    boot = "radem";
+    cut  = 0;
+elseif nargin == 5
+    cut = 0;
 end
 
 r=15;
