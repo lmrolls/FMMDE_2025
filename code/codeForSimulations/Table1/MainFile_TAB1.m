@@ -106,6 +106,7 @@ for nt = 1:length(n_values)
                 out = NaN(nIters, 2);
                 
                 parfor k = 1:nIters % Monte Carlo replications
+                    rng(k, 'twister');
 %                     substream = RandStream('mt19937ar', 'Seed', k);
 %                     RandStream.setGlobalStream(substream);
                     
