@@ -51,7 +51,7 @@ addpath('../factorEstimation');
 addpath('../subfunctionsTAB123')
 
 % Set random number generator for replicability
-%rng(1, 'twister');
+rng(1, 'twister');
 
 % Parameters
 n_values = [50,50]; % Cross-sectional dimension
@@ -106,7 +106,8 @@ for nt = 1:length(n_values)
                 out = NaN(nIters, 2);
                 
                 parfor k = 1:nIters % Monte Carlo replications
-                    rng(k, 'twister');
+                     rng_seed_offset = n * 100 + T *1000 + r * 10000 + DGP * 100000 + thetaMethod * 1000000; % Ensure different seed base for each d
+                     rng(k + rng_seed_offset, 'twister'); % Set unique seed for each simulation iteration
                     
                     out(k, :) = SimulFun(T, n, k0, r, thetaMethod, DGP, pval, bootIter, cut);
                     disp([k, thetaMethod, DGP, r, n, T]);
@@ -157,7 +158,7 @@ for nt = 1:length(n_values)
                         finalTable.eigenvalueRatio_n50_T100.rx5(index) = mean(out(:,2)==r);
                     end
                 end
-                
+                save
                 thetaMethod = thetaMethod + 1;
             end
             DGP = DGP + 1;
