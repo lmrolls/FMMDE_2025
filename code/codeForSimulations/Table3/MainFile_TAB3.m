@@ -59,9 +59,9 @@ n_values = [200,100]; % Cross-sectional dimension
 T_values = [100, 200]; % Time-series dimensions
 k0 = 1; 
 pval = 0.05; 
-nIters = 300; % Number of Monte Carlo replications (as per LaTeX: 1000)
-bootIter = 300;
-cut = true;
+nIters = 1000; % Number of Monte Carlo replications (as per LaTeX: 1000)
+bootIter = 499;
+cut = false;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -105,13 +105,13 @@ for nt = 1:length(n_values)
             thetaMethod = 1;
             while thetaMethod <= 4 % Theta, the signal-to-noise parameter
                 out = NaN(nIters, 2);
-                
+
                 parfor k = 1:nIters % Monte Carlo replications
-                    substream = RandStream('mt19937ar', 'Seed', k);
-                    RandStream.setGlobalStream(substream);
-                    
+                    rng_seed_offset = n * 100 + T *1000 + r * 10000 + DGP * 100000 + thetaMethod * 1000000; % Ensure different seed base for each d
+                    rng(k + rng_seed_offset, 'twister'); % Set unique seed for each simulation iteration
+
                     out(k, :) = SimulFun(T, n, k0, r, thetaMethod, DGP, pval, bootIter, cut);
-                    %disp([k, thetaMethod, DGP, r, n, T]);
+                    disp([k, thetaMethod, DGP, r, n, T]);
                 end
                 disp(['Mean success rate (r = ', num2str(r), ', DGP = ', num2str(DGP), ...
                       ', thetaMethod = ', num2str(thetaMethod), '): ', ...
