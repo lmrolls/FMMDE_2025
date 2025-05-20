@@ -159,7 +159,7 @@ for nt = 1:length(n_values)
                         finalTable.eigenvalueRatio_n100_T200.rx5(index) = mean(out(:,2)==r);
                     end
                 end
-                
+                save
                 thetaMethod = thetaMethod + 1;
             end
             DGP = DGP + 1;
